@@ -40,6 +40,8 @@
   Peter Kropf: https://github.com/pkropf/greenbacks
   
   Thomas Mayo-Smith: http://www.linkedin.com/pub/thomas-mayo-smith/
+  
+  ATM in action: http://youtu.be/PAKuGrViH3Y
 
 
 
