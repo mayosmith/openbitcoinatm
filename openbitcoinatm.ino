@@ -60,28 +60,28 @@
 #include <avr/pgmspace.h>
 l
 
- File BTCfile; 
- String logFile = "log.txt";
- String btcFile = "";
+File BTCfile; 
+String logFile = "log.txt";
+String btcFile = "";
  
- const int MAX_BITCOINS = 10; //max btc per SD card
+const int MAX_BITCOINS = 10; //max bit coins per SD card
  
- const int chipSelect = 10; //SD module
+const int chipSelect = 10; //SD module
  
- int printer_RX_Pin = 5;  // This is the green wire
- int printer_TX_Pin = 6;  // This is the yellow wire
+int printer_RX_Pin = 5;  // This is the green wire
+int printer_TX_Pin = 6;  // This is the yellow wire
  
-  Adafruit_Thermal printer(printer_RX_Pin, printer_TX_Pin);
+Adafruit_Thermal printer(printer_RX_Pin, printer_TX_Pin);
 
 
- long pulseCount = 0;
- unsigned long pulseTime, lastTime;
- volatile long pulsePerDollar = 4;
+long pulseCount = 0;
+unsigned long pulseTime, lastTime;
+volatile long pulsePerDollar = 4;
 static PROGMEM prog_uchar bitmap_data[];
 
 /*****************************************************
 Setup
- - init serial monitor
+ - Initializes the serial monitor
  - attach Interupt for counting pulses from Bill Acceptor
  - provision for SD Card
 ******************************************************/
@@ -95,7 +95,7 @@ void setup(){
   pinMode(10, OUTPUT); //Slave Select Pin #10 on Uno
   
 
-  Serial.println("setup...");
+  Serial.println("Setup...");
 
   getNextBitcoin();
  
@@ -103,23 +103,25 @@ void setup(){
 
 
 /*****************************************************
-Main Loop
 
+Main Loop
 
 ******************************************************/
 
 void loop(){
  
   if(pulseCount == 0)
- return;
+    return;
  
   if((millis() - pulseTime) < 2000)
-   return;
+    return;
  
- if(pulseCount == 4)
- printBTC(); //Serial.println ("One Dollar Baby!");  
+  if(pulseCount == 4)
+    printBTC(); //Serial.println ("One Dollar Baby!");  
+    
+  //to create an error, simply call the printError method with an int parameter of an error code.
  //else 
-// printError(); //Serial.println ("Error");  
+    // printError(); //Serial.println ("Error");  
  
  
    pulseCount = 0;
@@ -128,18 +130,18 @@ void loop(){
 /*****************************************************
 onPulse
 - read 50ms pulses from Apex Bill Acceptor.
-- 4 pulses indicates one dollar accepted
+- 4 pulses indicates one dollar accepted.
 
 ******************************************************/
 void onPulse(){
   
-int val = digitalRead(2);
-pulseTime = millis();
-
-if(val == HIGH)
-  pulseCount++;
-  
-}
+    int val = digitalRead(2);
+    pulseTime = millis();
+    
+    if(val == HIGH)
+        pulseCount++;
+      
+    }
 
 /*****************************************************
 printBTC
@@ -203,44 +205,40 @@ getNextBitcoin
 
 int getNextBitcoin(){
   
-  byte byte1 = 0xA2;
-  Serial.print(byte1,HEX);
+  byte firstByte = 0xA2;
+  Serial.print(firstByte,HEX);
   
   
-    if (!SD.begin(chipSelect)) {
-      return 1;// error("Card failed, or not present");
-    }
-    Serial.println("card initialized.");
+  if (!SD.begin(chipSelect)) {
+    return 1;// error("Card failed or not present!");
+  }
+  Serial.println("Card initialized.");
  
- for(int i=1;i<MAX_BITCOINS;i++){
-     String temp = "BTC_";
-     temp.concat(i);
-     temp.concat(".txt"); 
+  for(int i=1;i<MAX_BITCOINS;i++){
+    String temp = "BTC_";
+    temp.concat(i);
+    temp.concat(".txt"); 
      
-     char filename[temp.length()+1];   
-     temp.toCharArray(filename, sizeof(filename));
+    char filename[temp.length()+1];   
+    temp.toCharArray(filename, sizeof(filename));
   
-        if(SD.exists(filename)){
-          //datur = SD.open(filename,FILE_WRITE);
-            Serial.print("file exists: ");
-            Serial.print(filename);
-            
-            BTCfile = SD.open(filename);
-               while (BTCfile.available()) {
-                 Serial.write(BTCfile.read()); 
-               }
-            BTCfile.close();
-            return 1;
-         }
-         else{
-            Serial.print("file does not exist: ");
-            Serial.println(filename);
-        }
+    if(SD.exists(filename)){
+      //datur = SD.open(filename,FILE_WRITE);
+      Serial.print("File exists: " + filename);
+          
+      BTCfile = SD.open(filename);
+      while (BTCfile.available()) {
+        Serial.write(BTCfile.read()); 
+      }
+      BTCfile.close();
+      return 1;
+    }
+      else{
+        Serial.print("File does not exist: " + filename);
+      }
   
- } 
+  } 
 
-  
-  
 }
 
 /*****************************************************
@@ -252,22 +250,14 @@ printError
 void printError(int e){
   pinMode(7, OUTPUT); digitalWrite(7, LOW); // To also work w/IoTP printer
   printer.begin();
- printer.justify('C');
+  printer.justify('C');
    
   printer.setSize('S');     // Set type size, accepts 'S', 'M', 'L'
   
-  if(e == 1)
-  printer.println("Error: 1");
-
-  if(e == 2)
-  printer.println("Error: 2");
-
-  if(e == 3)
-  printer.println("Error: 3");
-
-  if(e == 4)
-  printer.println("Error: 4");
- 
+  
+  //e is simply the error code.
+  printer.println("Error: " + e);
+    
   printer.sleep();      // Tell printer to sleep
   printer.setDefault(); // Restore printer to defaults
   
