@@ -5,5 +5,5 @@ Open Bitcoin ATM -- The worlds first completely open-source Bitcoin ATM for Educ
 
 See it in action here: http://youtu.be/A4KvAgJx4GU
 
-(New more detailed video and circut detail coming soon...)
+Step by step tutorial here: http://openbitcoinatm.org
 
