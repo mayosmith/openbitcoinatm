@@ -26,7 +26,7 @@
  OpenBitcoinATM is the first open-source Bitcoin automated teller machine for
  experimentation and education. 
   
- This application, counts pulses from a Pyramid Technologies Apex 5000
+ This application, counts pulses from a Pyramid Technologies Apex 7000
  series bill acceptor and interfaces with the Adafruit 597 TTL serial Mini Thermal 
  Receipt Printer.
 
@@ -36,9 +36,7 @@
   John Mayo-Smith: https://github.com/mayosmith
   
   Here's the A2 Micro panel thermal printer --> http://www.adafruit.com/products/597
-  
-  Here's the bill accceptor --> APEX 5400 on eBay http://bit.ly/MpETED
-  
+
   Peter Kropf: https://github.com/pkropf/greenbacks
   
   Thomas Mayo-Smith:http://www.linkedin.com/pub/thomas-mayo-smith/63/497/a57
